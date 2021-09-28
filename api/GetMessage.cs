@@ -17,20 +17,11 @@ namespace StaticWebAppsEndToEndTesting.GetMessage
         [FunctionName("GetMessage")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+            ExecutionContext context,
             ILogger log)
         {
-            string message = "";
             log.LogInformation("C# HTTP trigger function processed a request! :) ");
-            // Determine path
-            var assembly = Assembly.GetExecutingAssembly();
-            // Format: "{Namespace}.{Folder}.{filename}.{Extension}"
-            string resourcePath = assembly.GetManifestResourceNames().Single(str => str.EndsWith("content.txt"));
-
-            using (Stream stream = assembly.GetManifestResourceStream(resourcePath))
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                message = reader.ReadToEnd();
-            }
+            string message = File.ReadAllText(context.FunctionDirectory + "/content.txt");
             return new OkObjectResult(message);
         }
     }
