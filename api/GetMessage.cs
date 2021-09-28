@@ -21,7 +21,7 @@ namespace StaticWebAppsEndToEndTesting.GetMessage
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request! :) ");
-            string message = File.ReadAllText(context.FunctionDirectory + "/content.txt");
+            string message = File.ReadAllText(context.FunctionAppDirectory + "/content.txt");
             return new OkObjectResult(message);
         }
     }
